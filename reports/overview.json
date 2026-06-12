@@ -1,0 +1,21 @@
+{
+  "benchmark_version": "0.1.0",
+  "methodology_version": "0.1.0",
+  "dataset_revision": "04e8940f5b6736a7ce8d22224fe2f2af74163ed2",
+  "snapshot_cutoff": "2026-03-05 22:54:39.383638+00:00",
+  "runs": 52104,
+  "runs_with_trajectories": 34462,
+  "trajectory_coverage": 0.661407953324121,
+  "pass_rate": 0.39630354675264856,
+  "tasks": 89,
+  "agents": 26,
+  "models": 44,
+  "cost_field_coverage": 1.0,
+  "positive_cost_coverage": 0.6050783049286044,
+  "median_duration_seconds": 418.93299865722656,
+  "median_steps": 9.0,
+  "median_tool_calls": 10.0,
+  "mean_suspected_waste_rate": 0.009697528791663877,
+  "estimated_wasted_cost_usd": 216.82560833268337,
+  "estimated_wasted_duration_seconds": 436892.0862412846
+}

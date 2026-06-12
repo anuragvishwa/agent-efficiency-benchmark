@@ -1,0 +1,8 @@
+{
+  "benchmark": "afwb-lite",
+  "version": "0.1-foundation",
+  "scenario_set": "foundation",
+  "scenario_count": 4,
+  "seed": 42,
+  "hosted_model_calls": false
+}

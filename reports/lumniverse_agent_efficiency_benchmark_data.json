@@ -1,0 +1,759 @@
+{
+  "afwb_scenarios": [
+    {
+      "avoidable_usage": {
+        "cost_usd": 0,
+        "input_tokens": 96,
+        "latency_ms": 125,
+        "output_tokens": 18,
+        "tool_calls": 1
+      },
+      "failed": true,
+      "first_observable_failure_span_id": "span_003",
+      "remediation": {
+        "remediation_id": "validate_iso_date_before_booking_v1",
+        "remediation_type": "ARGUMENT_SCHEMA_VALIDATION",
+        "target_component": "booking_adapter"
+      },
+      "root_cause_category": "TOOL_ARGUMENT_ERROR",
+      "root_cause_span_id": "span_002",
+      "scenario_id": "invalid_booking_date"
+    },
+    {
+      "avoidable_usage": {
+        "cost_usd": 0,
+        "input_tokens": 80,
+        "latency_ms": 214,
+        "output_tokens": 20,
+        "tool_calls": 1
+      },
+      "failed": true,
+      "first_observable_failure_span_id": "span_004",
+      "remediation": {
+        "remediation_id": "use_idempotency_key_payment_v1",
+        "remediation_type": "IDEMPOTENCY_KEY",
+        "target_component": "payment_adapter"
+      },
+      "root_cause_category": "SIDE_EFFECT_DUPLICATION",
+      "root_cause_span_id": "span_003",
+      "scenario_id": "duplicate_payment"
+    },
+    {
+      "avoidable_usage": {
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "latency_ms": 190,
+        "output_tokens": 0,
+        "tool_calls": 2
+      },
+      "failed": true,
+      "first_observable_failure_span_id": "span_004",
+      "remediation": {
+        "remediation_id": "mark_4xx_non_retryable_v1",
+        "remediation_type": "RETRY_POLICY_CHANGE",
+        "target_component": "retry_policy"
+      },
+      "root_cause_category": "TOOL_RETRY_STORM",
+      "root_cause_span_id": "span_003",
+      "scenario_id": "infinite_retry_terminal_error"
+    },
+    {
+      "avoidable_usage": {
+        "cost_usd": 0,
+        "input_tokens": 110,
+        "latency_ms": 152,
+        "output_tokens": 18,
+        "tool_calls": 1
+      },
+      "failed": true,
+      "first_observable_failure_span_id": "span_005",
+      "remediation": {
+        "remediation_id": "stop_on_success_flag_v1",
+        "remediation_type": "TERMINATION_CONDITION",
+        "target_component": "planner_executor_loop"
+      },
+      "root_cause_category": "LOOP_NON_TERMINATION",
+      "root_cause_span_id": "span_003",
+      "scenario_id": "missing_loop_exit_condition"
+    }
+  ],
+  "afwb_totals": {
+    "avoidable_cost_usd": 0,
+    "avoidable_input_tokens": 286,
+    "avoidable_latency_ms": 681,
+    "avoidable_output_tokens": 56,
+    "avoidable_tool_calls": 5,
+    "scenarios": 4
+  },
+  "derived": {
+    "terminal_avg_failed_to_success_cost_ratio": 3.1505767711275015,
+    "terminal_failed_cost_share": 0.827566326921361
+  },
+  "figures": {
+    "benchmark_coverage": "reports/figures/lumniverse_agent_efficiency/01_benchmark_coverage.png",
+    "cost_outcome": "reports/figures/lumniverse_agent_efficiency/02_cost_by_outcome.png",
+    "divergence": "reports/figures/lumniverse_agent_efficiency/05_trajectory_divergence.png",
+    "early_stop": "reports/figures/lumniverse_agent_efficiency/06_early_stop_savings.png",
+    "failure_patterns": "reports/figures/lumniverse_agent_efficiency/08_failure_pattern_cost.png",
+    "repeated_actions": "reports/figures/lumniverse_agent_efficiency/04_repeated_failed_actions.png",
+    "scaffold": "reports/figures/lumniverse_agent_efficiency/07_same_model_scaffold.png",
+    "success_waste": "reports/figures/lumniverse_agent_efficiency/03_successful_runs_waste.png"
+  },
+  "generated_at": "2026-06-12T10:53:55.324056+00:00",
+  "swe_failure_patterns": [
+    {
+      "failed_runs": 37622.0,
+      "mean_error_rate": 0.39179903,
+      "mean_repeat_rate": 0.0964641698,
+      "mean_waste_rate": 0.006224877,
+      "rule_based_rca": "TOOL_EXECUTION_FAILURE",
+      "runs": 37622,
+      "suspected_wasted_actions": 17657.0
+    },
+    {
+      "failed_runs": 24252.0,
+      "mean_error_rate": 0.0623360382,
+      "mean_repeat_rate": 0.0320024021,
+      "mean_waste_rate": 0.0122730862,
+      "rule_based_rca": "POSSIBLE_MISSING_VERIFICATION",
+      "runs": 24252,
+      "suspected_wasted_actions": 17628.0
+    },
+    {
+      "failed_runs": 0.0,
+      "mean_error_rate": 0.1742867329,
+      "mean_repeat_rate": 0.0182372648,
+      "mean_waste_rate": 0.0032393676,
+      "rule_based_rca": "NO_MAJOR_RULE_BASED_FAILURE",
+      "runs": 13389,
+      "suspected_wasted_actions": 2451.0
+    },
+    {
+      "failed_runs": 2396.0,
+      "mean_error_rate": 0.0410609743,
+      "mean_repeat_rate": 0.0809991866,
+      "mean_waste_rate": 0.0521991912,
+      "rule_based_rca": "UNCLASSIFIED_FAILURE",
+      "runs": 2396,
+      "suspected_wasted_actions": 6649.0
+    },
+    {
+      "failed_runs": 2228.0,
+      "mean_error_rate": 0.5198912269,
+      "mean_repeat_rate": 0.3045207323,
+      "mean_waste_rate": 0.2570520625,
+      "rule_based_rca": "REPEATED_FAILED_APPROACH",
+      "runs": 2228,
+      "suspected_wasted_actions": 68202.0
+    },
+    {
+      "failed_runs": 142.0,
+      "mean_error_rate": 0.0232184553,
+      "mean_repeat_rate": 0.1302398062,
+      "mean_waste_rate": 0.0779338143,
+      "rule_based_rca": "EXCESSIVE_EXPLORATION",
+      "runs": 142,
+      "suspected_wasted_actions": 632.0
+    },
+    {
+      "failed_runs": 7.0,
+      "mean_error_rate": 0.0505952381,
+      "mean_repeat_rate": 0.0288461538,
+      "mean_waste_rate": 0.0178571429,
+      "rule_based_rca": "LATE_FAILURE",
+      "runs": 7,
+      "suspected_wasted_actions": 2.0
+    }
+  ],
+  "swe_outcome_direct": [
+    {
+      "adjacent_repeats": 256638.0,
+      "error_events": 632882.0,
+      "mean_error_rate": 0.2627633298,
+      "mean_repeat_rate": 0.0794715362,
+      "mean_waste_rate": 0.0186176732,
+      "median_steps": 39.0,
+      "median_tool_calls": 19.0,
+      "runs": 66647,
+      "same_result_repeats": 220631.0,
+      "success": false,
+      "suspected_wasted_actions": 110770.0
+    },
+    {
+      "adjacent_repeats": 7478.0,
+      "error_events": 46178.0,
+      "mean_error_rate": 0.1742867329,
+      "mean_repeat_rate": 0.0182372648,
+      "mean_waste_rate": 0.0032393676,
+      "median_steps": 25.0,
+      "median_tool_calls": 12.0,
+      "runs": 13389,
+      "same_result_repeats": 5457.0,
+      "success": true,
+      "suspected_wasted_actions": 2451.0
+    }
+  ],
+  "swe_overview_direct": {
+    "agents": 1.0,
+    "cost_runs": 0.0,
+    "duration_runs": 0.0,
+    "mean_error_rate": 0.2479623258,
+    "mean_repeat_rate": 0.0692278251,
+    "mean_waste_rate": 0.0160450792,
+    "median_steps": 35.0,
+    "median_tool_calls": 17.0,
+    "models": 3.0,
+    "pass_rate": 0.1672872208,
+    "runs": 80036.0,
+    "successful_runs": 13389.0,
+    "tasks": 3591.0,
+    "trajectory_coverage": 1.0,
+    "trajectory_runs": 80036.0
+  },
+  "swe_quality": {
+    "cost_field_coverage": 0.0,
+    "dataset_id": "nebius/SWE-agent-trajectories",
+    "dataset_key": "swe_agent",
+    "dataset_label": "SWE-agent trajectories",
+    "duration_coverage": 0.0,
+    "earliest_started_at": null,
+    "generated_at": "2026-06-12T10:25:03.432078+00:00",
+    "methodology_version": "0.1.0",
+    "missing_cost_count": 80036,
+    "positive_cost_coverage": 0.0,
+    "run_count": 80036,
+    "run_id_sources": [
+      {
+        "run_id_source": "derived",
+        "runs": 80036
+      }
+    ],
+    "runs_with_usable_steps": 80036,
+    "runs_without_usable_steps": 0,
+    "snapshot_cutoff": null,
+    "source_last_modified": "2024-12-23T12:42:05+00:00",
+    "source_revision": "68195a1450865274106246d0d0296a1d6807b88e",
+    "step_event_count": 2275695,
+    "token_coverage": 0.0,
+    "trajectory_coverage": 1.0,
+    "unique_agents": 1,
+    "unique_models_canonical": 3,
+    "unique_models_raw": 3,
+    "unique_tasks": 3591,
+    "zero_cost_count": 0
+  },
+  "terminal_early_stop_max": {
+    "conservative_trigger_rate_pct": 4.3912175649,
+    "conservative_triggered_runs": 2288.0,
+    "estimated_cost_saved_usd": 1495.8267610543,
+    "estimated_duration_saved_seconds": 1629997.0912763884,
+    "events_saved": 121855.0,
+    "runs": 52104
+  },
+  "terminal_early_stop_policy": [
+    {
+      "conservative_trigger_rate_pct": 1.6121602948,
+      "conservative_triggers": 840.0,
+      "estimated_cost_saved_usd": 1001.136247309,
+      "estimated_duration_saved_seconds": 753501.937008148,
+      "events_saved": 52002.0,
+      "policy": "same_result_no_progress_burst"
+    },
+    {
+      "conservative_trigger_rate_pct": 2.9095654844,
+      "conservative_triggers": 1516.0,
+      "estimated_cost_saved_usd": 504.6601016133,
+      "estimated_duration_saved_seconds": 924115.0857960752,
+      "events_saved": 72972.0,
+      "policy": "five_consecutive_errors"
+    },
+    {
+      "conservative_trigger_rate_pct": 0.0882849685,
+      "conservative_triggers": 46.0,
+      "estimated_cost_saved_usd": 4.679874694,
+      "estimated_duration_saved_seconds": 27272.9157734993,
+      "events_saved": 1863.0,
+      "policy": "third_identical_failed_action_result"
+    }
+  ],
+  "terminal_failure_patterns": [
+    {
+      "estimated_wasted_cost_usd": 75.7592749268,
+      "estimated_wasted_duration_seconds": 126468.7187657291,
+      "failed_runs": 7630.0,
+      "mean_error_rate": 0.0225130254,
+      "mean_repeat_rate": 0.0755334735,
+      "mean_waste_rate": 0.0086757399,
+      "median_cost_usd": 0.040424726,
+      "rule_based_rca": "POSSIBLE_MISSING_VERIFICATION",
+      "runs": 7630,
+      "total_observed_cost_usd": 3541.4329622903
+    },
+    {
+      "estimated_wasted_cost_usd": 65.5254292137,
+      "estimated_wasted_duration_seconds": 113034.3745655775,
+      "failed_runs": 9034.0,
+      "mean_error_rate": 0.2190745166,
+      "mean_repeat_rate": 0.1495828053,
+      "mean_waste_rate": 0.0071641333,
+      "median_cost_usd": 0.2314454746,
+      "rule_based_rca": "TOOL_EXECUTION_FAILURE",
+      "runs": 9034,
+      "total_observed_cost_usd": 9522.4216906986
+    },
+    {
+      "estimated_wasted_cost_usd": 30.8081164931,
+      "estimated_wasted_duration_seconds": 88974.9174576376,
+      "failed_runs": 0.0,
+      "mean_error_rate": 0.0760832975,
+      "mean_repeat_rate": 0.1206959692,
+      "mean_waste_rate": 0.0103772695,
+      "median_cost_usd": 0.0873488998,
+      "rule_based_rca": "NO_MAJOR_RULE_BASED_FAILURE",
+      "runs": 11079,
+      "total_observed_cost_usd": 3434.5917217323
+    },
+    {
+      "estimated_wasted_cost_usd": 22.543008897,
+      "estimated_wasted_duration_seconds": 31506.7605846863,
+      "failed_runs": 557.0,
+      "mean_error_rate": 0.0198467243,
+      "mean_repeat_rate": 0.3846401615,
+      "mean_waste_rate": 0.0272062471,
+      "median_cost_usd": 0.5726830292,
+      "rule_based_rca": "EXCESSIVE_EXPLORATION",
+      "runs": 557,
+      "total_observed_cost_usd": 939.1169104752
+    },
+    {
+      "estimated_wasted_cost_usd": 11.2100835012,
+      "estimated_wasted_duration_seconds": 55175.4596694211,
+      "failed_runs": 5774.0,
+      "mean_error_rate": 0.0234787328,
+      "mean_repeat_rate": 0.1268023728,
+      "mean_waste_rate": 0.0086964583,
+      "median_cost_usd": 0.0333340299,
+      "rule_based_rca": "UNCLASSIFIED_FAILURE",
+      "runs": 5774,
+      "total_observed_cost_usd": 1406.4374907287
+    },
+    {
+      "estimated_wasted_cost_usd": 9.6753113993,
+      "estimated_wasted_duration_seconds": 16967.9825119771,
+      "failed_runs": 121.0,
+      "mean_error_rate": 0.3592481829,
+      "mean_repeat_rate": 0.2276607974,
+      "mean_waste_rate": 0.1684344266,
+      "median_cost_usd": 0.0344712996,
+      "rule_based_rca": "REPEATED_FAILED_APPROACH",
+      "runs": 121,
+      "total_observed_cost_usd": 69.8383644872
+    },
+    {
+      "estimated_wasted_cost_usd": 1.3043839016,
+      "estimated_wasted_duration_seconds": 4763.8726862561,
+      "failed_runs": 267.0,
+      "mean_error_rate": 0.0114985075,
+      "mean_repeat_rate": 0.1171794509,
+      "mean_waste_rate": 0.0095954927,
+      "median_cost_usd": 2.3439399719,
+      "rule_based_rca": "LATE_FAILURE",
+      "runs": 267,
+      "total_observed_cost_usd": 2082.3810748175
+    },
+    {
+      "estimated_wasted_cost_usd": null,
+      "estimated_wasted_duration_seconds": null,
+      "failed_runs": 8072.0,
+      "mean_error_rate": 0.0,
+      "mean_repeat_rate": 0.0,
+      "mean_waste_rate": 0.0,
+      "median_cost_usd": 0.0,
+      "rule_based_rca": "MISSING_TRAJECTORY",
+      "runs": 17642,
+      "total_observed_cost_usd": 567.2377233757
+    }
+  ],
+  "terminal_gpt5_scaffolds": [
+    {
+      "agent": "codex",
+      "mean_error_rate": 0.1189878321,
+      "mean_repeat_rate": 0.0033672003,
+      "mean_waste_rate": 0.0006330161,
+      "median_cost_usd": 0.113135004,
+      "median_duration_seconds": 212.8829956055,
+      "median_steps": 17.0,
+      "median_tool_calls": 12.0,
+      "pass_rate": 0.5305623472,
+      "runs": 409,
+      "successes": 217.0
+    },
+    {
+      "agent": "openhands",
+      "mean_error_rate": 0.0469662589,
+      "mean_repeat_rate": 0.5214311264,
+      "mean_waste_rate": 0.0,
+      "median_cost_usd": 0.393152504,
+      "median_duration_seconds": 946.1645202637,
+      "median_steps": 41.0,
+      "median_tool_calls": 30.5,
+      "pass_rate": 0.4472477064,
+      "runs": 436,
+      "successes": 195.0
+    },
+    {
+      "agent": "terminus-2",
+      "mean_error_rate": 0.0166579743,
+      "mean_repeat_rate": 0.0406501243,
+      "mean_waste_rate": 0.005829319,
+      "median_cost_usd": 0.157286253,
+      "median_duration_seconds": 506.3665008545,
+      "median_steps": 7.0,
+      "median_tool_calls": 25.0,
+      "pass_rate": 0.3555045872,
+      "runs": 436,
+      "successes": 155.0
+    },
+    {
+      "agent": "mini-swe-agent",
+      "mean_error_rate": 0.2041630022,
+      "mean_repeat_rate": 0.0004501029,
+      "mean_waste_rate": 0.0001929012,
+      "median_cost_usd": 0.2347448826,
+      "median_duration_seconds": 519.2980041504,
+      "median_steps": 9.0,
+      "median_tool_calls": 7.0,
+      "pass_rate": 0.349537037,
+      "runs": 432,
+      "successes": 151.0
+    }
+  ],
+  "terminal_outcome_cost": [
+    {
+      "avg_cost_usd": 0.5673244852,
+      "estimated_wasted_cost_usd": 186.0174918396,
+      "estimated_wasted_duration_seconds": 347917.1687836466,
+      "mean_error_rate": 0.0745208561,
+      "mean_repeat_rate": 0.0932407187,
+      "mean_waste_rate": 0.0069695269,
+      "median_cost_usd": 0.0226346302,
+      "median_duration_seconds": 565.1090087891,
+      "median_positive_cost_usd": 0.1272421503,
+      "median_steps": 12.0,
+      "median_tool_calls": 13.0,
+      "positive_cost_runs": 21740.0,
+      "runs": 31455,
+      "success": false,
+      "total_cost_usd": 17845.1916819751,
+      "total_duration_seconds": 27239231.927533403,
+      "trajectory_runs": 23383.0
+    },
+    {
+      "avg_cost_usd": 0.18007004,
+      "estimated_wasted_cost_usd": 30.8081164931,
+      "estimated_wasted_duration_seconds": 88974.9174576376,
+      "mean_error_rate": 0.0408216792,
+      "mean_repeat_rate": 0.0647581308,
+      "mean_waste_rate": 0.0055678129,
+      "median_cost_usd": 0.0,
+      "median_duration_seconds": 307.0490112305,
+      "median_positive_cost_usd": 0.1461680984,
+      "median_steps": 6.0,
+      "median_tool_calls": 6.0,
+      "positive_cost_runs": 9787.0,
+      "runs": 20649,
+      "success": true,
+      "total_cost_usd": 3718.2662566305,
+      "total_duration_seconds": 9665912.361410987,
+      "trajectory_runs": 11079.0
+    }
+  ],
+  "terminal_overview": {
+    "agents": 26,
+    "benchmark_version": "0.1.0",
+    "cost_field_coverage": 1.0,
+    "dataset_revision": "04e8940f5b6736a7ce8d22224fe2f2af74163ed2",
+    "estimated_wasted_cost_usd": 216.82560833268337,
+    "estimated_wasted_duration_seconds": 436892.0862412846,
+    "mean_suspected_waste_rate": 0.009697528791663877,
+    "median_duration_seconds": 418.93299865722656,
+    "median_steps": 9.0,
+    "median_tool_calls": 10.0,
+    "methodology_version": "0.1.0",
+    "models": 44,
+    "pass_rate": 0.39630354675264856,
+    "positive_cost_coverage": 0.6050783049286044,
+    "runs": 52104,
+    "runs_with_trajectories": 34462,
+    "snapshot_cutoff": "2026-03-05 22:54:39.383638+00:00",
+    "tasks": 89,
+    "trajectory_coverage": 0.661407953324121
+  },
+  "terminal_quality": {
+    "cost_field_coverage": 1.0,
+    "dataset_id": "yoonholee/terminalbench-trajectories",
+    "dataset_key": "terminalbench",
+    "dataset_label": "Terminal-Bench",
+    "duration_coverage": 1.0,
+    "earliest_started_at": "2025-10-31T06:55:22.291303+00:00",
+    "generated_at": "2026-06-12T10:10:18.921978+00:00",
+    "methodology_version": "0.1.0",
+    "missing_cost_count": 0,
+    "positive_cost_coverage": 0.6050783049286044,
+    "run_count": 52104,
+    "run_id_sources": [
+      {
+        "run_id_source": "derived",
+        "runs": 29506
+      },
+      {
+        "run_id_source": "trial_id",
+        "runs": 22598
+      }
+    ],
+    "runs_with_usable_steps": 34462,
+    "runs_without_usable_steps": 17642,
+    "snapshot_cutoff": "2026-03-05T22:54:39.383638+00:00",
+    "source_last_modified": "2026-03-09T20:10:43+00:00",
+    "source_revision": "04e8940f5b6736a7ce8d22224fe2f2af74163ed2",
+    "step_event_count": 1981314,
+    "token_coverage": 0.6611776447105788,
+    "trajectory_coverage": 0.661407953324121,
+    "unique_agents": 26,
+    "unique_models_canonical": 44,
+    "unique_models_raw": 49,
+    "unique_tasks": 89,
+    "zero_cost_count": 20577
+  },
+  "terminal_repeat_rate_agents": [
+    {
+      "agent": "judy",
+      "mean_error_rate": 0.0504917437,
+      "mean_repeat_rate": 0.5451652434,
+      "mean_waste_rate": 0.2510999326,
+      "median_repeat_rate": 0.5625,
+      "successful_runs": 120.0,
+      "trajectory_runs": 157
+    },
+    {
+      "agent": "openhands",
+      "mean_error_rate": 0.0606359315,
+      "mean_repeat_rate": 0.4768578476,
+      "mean_waste_rate": 0.0022225279,
+      "median_repeat_rate": 0.5090909091,
+      "successful_runs": 1745.0,
+      "trajectory_runs": 6055
+    },
+    {
+      "agent": "terminus-3-3",
+      "mean_error_rate": 0.0581095254,
+      "mean_repeat_rate": 0.1022168622,
+      "mean_waste_rate": 0.0256241446,
+      "median_repeat_rate": 0.0555555556,
+      "successful_runs": 506.0,
+      "trajectory_runs": 678
+    },
+    {
+      "agent": "terminus-2",
+      "mean_error_rate": 0.0852404521,
+      "mean_repeat_rate": 0.0594193355,
+      "mean_waste_rate": 0.0101902106,
+      "median_repeat_rate": 0.0322580645,
+      "successful_runs": 5178.0,
+      "trajectory_runs": 15941
+    },
+    {
+      "agent": "gemini-cli",
+      "mean_error_rate": 0.3292601621,
+      "mean_repeat_rate": 0.0553450082,
+      "mean_waste_rate": 0.0392261745,
+      "median_repeat_rate": 0.0,
+      "successful_runs": 153.0,
+      "trajectory_runs": 787
+    },
+    {
+      "agent": "deepagent-harbor",
+      "mean_error_rate": 0.0477733551,
+      "mean_repeat_rate": 0.0475489142,
+      "mean_waste_rate": 0.0314001349,
+      "median_repeat_rate": 0.0,
+      "successful_runs": 284.0,
+      "trajectory_runs": 417
+    },
+    {
+      "agent": "claude-code",
+      "mean_error_rate": 0.0640301247,
+      "mean_repeat_rate": 0.0278695206,
+      "mean_waste_rate": 0.0076498465,
+      "median_repeat_rate": 0.0,
+      "successful_runs": 1099.0,
+      "trajectory_runs": 2522
+    },
+    {
+      "agent": "mini-swe-agent",
+      "mean_error_rate": 0.1242325523,
+      "mean_repeat_rate": 0.0216419582,
+      "mean_waste_rate": 0.0055482579,
+      "median_repeat_rate": 0.0,
+      "successful_runs": 1517.0,
+      "trajectory_runs": 6495
+    },
+    {
+      "agent": "codex",
+      "mean_error_rate": 0.117916786,
+      "mean_repeat_rate": 0.0045175259,
+      "mean_waste_rate": 0.0015653339,
+      "median_repeat_rate": 0.0,
+      "successful_runs": 477.0,
+      "trajectory_runs": 1410
+    }
+  ],
+  "terminal_repeated_failed_agents": [
+    {
+      "agent": "judy",
+      "estimated_wasted_cost_usd": 0.0,
+      "mean_repeat_rate": 0.5451652434,
+      "mean_waste_rate": 0.2510999326,
+      "repeated_failed_attempt_events": 196.0,
+      "repeated_failed_rca_rate_pct": 9.5541401274,
+      "repeated_failed_rca_runs": 15.0,
+      "runs": 157
+    },
+    {
+      "agent": "mini-swe-agent",
+      "estimated_wasted_cost_usd": 16.845069698,
+      "mean_repeat_rate": 0.0216419582,
+      "mean_waste_rate": 0.0055482579,
+      "repeated_failed_attempt_events": 316.0,
+      "repeated_failed_rca_rate_pct": 0.8468052348,
+      "repeated_failed_rca_runs": 55.0,
+      "runs": 6495
+    },
+    {
+      "agent": "gemini-cli",
+      "estimated_wasted_cost_usd": 9.5471487578,
+      "mean_repeat_rate": 0.0553450082,
+      "mean_waste_rate": 0.0392261745,
+      "repeated_failed_attempt_events": 23.0,
+      "repeated_failed_rca_rate_pct": 0.7623888183,
+      "repeated_failed_rca_runs": 6.0,
+      "runs": 787
+    },
+    {
+      "agent": "terminus-2",
+      "estimated_wasted_cost_usd": 156.2334662881,
+      "mean_repeat_rate": 0.0594193355,
+      "mean_waste_rate": 0.0101902106,
+      "repeated_failed_attempt_events": 396.0,
+      "repeated_failed_rca_rate_pct": 0.2634715513,
+      "repeated_failed_rca_runs": 42.0,
+      "runs": 15941
+    },
+    {
+      "agent": "codex",
+      "estimated_wasted_cost_usd": 0.1857407837,
+      "mean_repeat_rate": 0.0045175259,
+      "mean_waste_rate": 0.0015653339,
+      "repeated_failed_attempt_events": 4.0,
+      "repeated_failed_rca_rate_pct": 0.1418439716,
+      "repeated_failed_rca_runs": 2.0,
+      "runs": 1410
+    },
+    {
+      "agent": "claude-code",
+      "estimated_wasted_cost_usd": 16.0470420643,
+      "mean_repeat_rate": 0.0278695206,
+      "mean_waste_rate": 0.0076498465,
+      "repeated_failed_attempt_events": 19.0,
+      "repeated_failed_rca_rate_pct": 0.0396510706,
+      "repeated_failed_rca_runs": 1.0,
+      "runs": 2522
+    },
+    {
+      "agent": "terminus-3-3",
+      "estimated_wasted_cost_usd": 17.9671407407,
+      "mean_repeat_rate": 0.1022168622,
+      "mean_waste_rate": 0.0256241446,
+      "repeated_failed_attempt_events": 5.0,
+      "repeated_failed_rca_rate_pct": 0.0,
+      "repeated_failed_rca_runs": 0.0,
+      "runs": 678
+    },
+    {
+      "agent": "deepagent-harbor",
+      "estimated_wasted_cost_usd": 0.0,
+      "mean_repeat_rate": 0.0475489142,
+      "mean_waste_rate": 0.0314001349,
+      "repeated_failed_attempt_events": 5.0,
+      "repeated_failed_rca_rate_pct": 0.0,
+      "repeated_failed_rca_runs": 0.0,
+      "runs": 417
+    },
+    {
+      "agent": "openhands",
+      "estimated_wasted_cost_usd": 0.0,
+      "mean_repeat_rate": 0.4768578476,
+      "mean_waste_rate": 0.0022225279,
+      "repeated_failed_attempt_events": 0.0,
+      "repeated_failed_rca_rate_pct": 0.0,
+      "repeated_failed_rca_runs": 0.0,
+      "runs": 6055
+    }
+  ],
+  "terminal_success_waste": {
+    "adjacent_repeats": 62132.0,
+    "avg_cost_usd": 0.3100091815,
+    "error_events": 27070.0,
+    "estimated_wasted_cost_usd": 30.8081164931,
+    "estimated_wasted_duration_seconds": 88974.9174576376,
+    "mean_error_event_rate": 0.0760832975,
+    "mean_repeat_rate": 0.1206959692,
+    "mean_waste_rate": 0.0103772695,
+    "median_cost_usd": 0.0873488998,
+    "median_duration_seconds": 282.5260009766,
+    "median_steps": 18.0,
+    "median_tool_calls": 23.0,
+    "runs": 11079,
+    "same_result_repeats": 5249.0,
+    "success": true,
+    "suspected_wasted_actions": 5107.0
+  },
+  "terminal_trajectory_outcome": [
+    {
+      "adjacent_repeats": 210041.0,
+      "avg_cost_usd": 0.7510425734,
+      "error_events": 97296.0,
+      "estimated_wasted_cost_usd": 186.0174918396,
+      "estimated_wasted_duration_seconds": 347917.1687836466,
+      "mean_error_event_rate": 0.100246056,
+      "mean_repeat_rate": 0.125428166,
+      "mean_waste_rate": 0.0093754637,
+      "median_cost_usd": 0.0852349472,
+      "median_duration_seconds": 498.766998291,
+      "median_steps": 22.0,
+      "median_tool_calls": 25.0,
+      "runs": 23383,
+      "same_result_repeats": 17887.0,
+      "success": false,
+      "suspected_wasted_actions": 15365.0
+    },
+    {
+      "adjacent_repeats": 62132.0,
+      "avg_cost_usd": 0.3100091815,
+      "error_events": 27070.0,
+      "estimated_wasted_cost_usd": 30.8081164931,
+      "estimated_wasted_duration_seconds": 88974.9174576376,
+      "mean_error_event_rate": 0.0760832975,
+      "mean_repeat_rate": 0.1206959692,
+      "mean_waste_rate": 0.0103772695,
+      "median_cost_usd": 0.0873488998,
+      "median_duration_seconds": 282.5260009766,
+      "median_steps": 18.0,
+      "median_tool_calls": 23.0,
+      "runs": 11079,
+      "same_result_repeats": 5249.0,
+      "success": true,
+      "suspected_wasted_actions": 5107.0
+    }
+  ]
+}

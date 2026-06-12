@@ -1,0 +1,9 @@
+{
+  "max_context_tokens": 8000,
+  "max_retrieved_chunks": 10,
+  "max_graph_hops": 3,
+  "max_full_files": 2,
+  "max_file_fragment_tokens": 3000,
+  "max_retrieval_rounds": 3,
+  "max_agent_steps": 20
+}

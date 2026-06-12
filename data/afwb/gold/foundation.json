@@ -1,0 +1,54 @@
+[
+  {
+    "scenario_id": "invalid_booking_date",
+    "failed": true,
+    "root_cause_category": "TOOL_ARGUMENT_ERROR",
+    "root_cause_span_id": "span_002",
+    "first_observable_failure_span_id": "span_003",
+    "remediation": {
+      "remediation_type": "ARGUMENT_SCHEMA_VALIDATION",
+      "remediation_id": "validate_iso_date_before_booking_v1",
+      "target_component": "booking_adapter"
+    },
+    "avoidable_usage": {"input_tokens": 96, "output_tokens": 18, "tool_calls": 1, "latency_ms": 125, "cost_usd": 0}
+  },
+  {
+    "scenario_id": "duplicate_payment",
+    "failed": true,
+    "root_cause_category": "SIDE_EFFECT_DUPLICATION",
+    "root_cause_span_id": "span_003",
+    "first_observable_failure_span_id": "span_004",
+    "remediation": {
+      "remediation_type": "IDEMPOTENCY_KEY",
+      "remediation_id": "use_idempotency_key_payment_v1",
+      "target_component": "payment_adapter"
+    },
+    "avoidable_usage": {"input_tokens": 80, "output_tokens": 20, "tool_calls": 1, "latency_ms": 214, "cost_usd": 0}
+  },
+  {
+    "scenario_id": "infinite_retry_terminal_error",
+    "failed": true,
+    "root_cause_category": "TOOL_RETRY_STORM",
+    "root_cause_span_id": "span_003",
+    "first_observable_failure_span_id": "span_004",
+    "remediation": {
+      "remediation_type": "RETRY_POLICY_CHANGE",
+      "remediation_id": "mark_4xx_non_retryable_v1",
+      "target_component": "retry_policy"
+    },
+    "avoidable_usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 2, "latency_ms": 190, "cost_usd": 0}
+  },
+  {
+    "scenario_id": "missing_loop_exit_condition",
+    "failed": true,
+    "root_cause_category": "LOOP_NON_TERMINATION",
+    "root_cause_span_id": "span_003",
+    "first_observable_failure_span_id": "span_005",
+    "remediation": {
+      "remediation_type": "TERMINATION_CONDITION",
+      "remediation_id": "stop_on_success_flag_v1",
+      "target_component": "planner_executor_loop"
+    },
+    "avoidable_usage": {"input_tokens": 110, "output_tokens": 18, "tool_calls": 1, "latency_ms": 152, "cost_usd": 0}
+  }
+]

@@ -1,0 +1,398 @@
+[
+  {
+    "scenario_id": "invalid_booking_date",
+    "name": "Invalid booking date",
+    "family": "Tool use and control flow",
+    "description": "The agent emits an invalid ISO date and repeats a rejected booking attempt.",
+    "seed": 42,
+    "memory_test": true,
+    "root_cause_category": "TOOL_ARGUMENT_ERROR",
+    "mutation": "Invalid ISO date generated",
+    "symptom": "Repeated booking rejection",
+    "remediation": {
+      "remediation_type": "ARGUMENT_SCHEMA_VALIDATION",
+      "remediation_id": "validate_iso_date_before_booking_v1",
+      "target_component": "booking_adapter"
+    },
+    "reference": {
+      "expected_status": "passed",
+      "steps": [
+        {
+          "span_id": "span_001",
+          "type": "model",
+          "name": "booking_agent.extract_date",
+          "status": "ok",
+          "input": {"user_request": "Book a room for 2026-06-19."},
+          "output": {"date_text": "2026-06-19"},
+          "usage": {"input_tokens": 120, "output_tokens": 24, "tool_calls": 0, "latency_ms": 40, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_002",
+          "parent_span_id": "span_001",
+          "type": "tool",
+          "name": "date_normalizer.validate_iso_date",
+          "status": "ok",
+          "input": {"date_text": "2026-06-19"},
+          "output": {"normalized_date": "2026-06-19"},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 5, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_003",
+          "parent_span_id": "span_002",
+          "type": "tool",
+          "name": "booking_adapter.create_booking",
+          "status": "ok",
+          "input": {"date": "2026-06-19"},
+          "output": {"booking_id": "book_ref_001", "accepted": true},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 120, "cost_usd": 0}
+        }
+      ]
+    },
+    "mutated": {
+      "expected_status": "failed",
+      "steps": [
+        {
+          "span_id": "span_001",
+          "type": "model",
+          "name": "booking_agent.extract_date",
+          "status": "ok",
+          "input": {"user_request": "Book a room next Friday."},
+          "output": {"date_text": "next Friday"},
+          "usage": {"input_tokens": 128, "output_tokens": 22, "tool_calls": 0, "latency_ms": 42, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_002",
+          "parent_span_id": "span_001",
+          "type": "model",
+          "name": "booking_agent.normalize_date_candidate",
+          "status": "ok",
+          "input": {"date_text": "next Friday"},
+          "output": {"normalized_date": "2026-14-44"},
+          "usage": {"input_tokens": 96, "output_tokens": 18, "tool_calls": 0, "latency_ms": 38, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_003",
+          "parent_span_id": "span_002",
+          "type": "tool",
+          "name": "date_normalizer.validate_iso_date",
+          "status": "error",
+          "input": {"date_text": "2026-14-44"},
+          "output": {"error": "month and day are out of range", "accepted": false},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 5, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_004",
+          "parent_span_id": "span_003",
+          "type": "tool",
+          "name": "booking_adapter.create_booking",
+          "status": "error",
+          "input": {"date": "2026-14-44"},
+          "output": {"error": "invalid date", "accepted": false},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 120, "cost_usd": 0}
+        }
+      ]
+    }
+  },
+  {
+    "scenario_id": "duplicate_payment",
+    "name": "Duplicate payment",
+    "family": "Tool use and control flow",
+    "description": "The agent repeats a successful payment after an ambiguous response without using an idempotency key.",
+    "seed": 42,
+    "memory_test": true,
+    "root_cause_category": "SIDE_EFFECT_DUPLICATION",
+    "mutation": "Payment call repeated after ambiguous response",
+    "symptom": "Two successful charges",
+    "remediation": {
+      "remediation_type": "IDEMPOTENCY_KEY",
+      "remediation_id": "use_idempotency_key_payment_v1",
+      "target_component": "payment_adapter"
+    },
+    "reference": {
+      "expected_status": "passed",
+      "steps": [
+        {
+          "span_id": "span_001",
+          "type": "model",
+          "name": "payment_agent.prepare_charge",
+          "status": "ok",
+          "input": {"invoice_id": "inv_001", "amount_cents": 4200},
+          "output": {"amount_cents": 4200, "idempotency_key": "inv_001:v1"},
+          "usage": {"input_tokens": 90, "output_tokens": 18, "tool_calls": 0, "latency_ms": 35, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_002",
+          "parent_span_id": "span_001",
+          "type": "tool",
+          "name": "payment_adapter.charge",
+          "status": "ok",
+          "input": {"invoice_id": "inv_001", "amount_cents": 4200, "idempotency_key": "inv_001:v1"},
+          "output": {"charge_id": "ch_001", "duplicate": false},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 180, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_003",
+          "parent_span_id": "span_002",
+          "type": "state",
+          "name": "payment_agent.record_receipt",
+          "status": "ok",
+          "input": {"charge_id": "ch_001"},
+          "output": {"receipt_recorded": true},
+          "usage": {"input_tokens": 12, "output_tokens": 4, "tool_calls": 0, "latency_ms": 8, "cost_usd": 0}
+        }
+      ]
+    },
+    "mutated": {
+      "expected_status": "failed",
+      "steps": [
+        {
+          "span_id": "span_001",
+          "type": "model",
+          "name": "payment_agent.prepare_charge",
+          "status": "ok",
+          "input": {"invoice_id": "inv_001", "amount_cents": 4200},
+          "output": {"amount_cents": 4200, "idempotency_key": null},
+          "usage": {"input_tokens": 92, "output_tokens": 16, "tool_calls": 0, "latency_ms": 36, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_002",
+          "parent_span_id": "span_001",
+          "type": "tool",
+          "name": "payment_adapter.charge",
+          "status": "ok",
+          "input": {"invoice_id": "inv_001", "amount_cents": 4200, "idempotency_key": null},
+          "output": {"charge_id": "ch_001", "response": "ambiguous_success"},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 180, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_003",
+          "parent_span_id": "span_002",
+          "type": "model",
+          "name": "payment_agent.retry_decision",
+          "status": "ok",
+          "input": {"response": "ambiguous_success"},
+          "output": {"retry": true, "reason": "no receipt observed"},
+          "usage": {"input_tokens": 80, "output_tokens": 20, "tool_calls": 0, "latency_ms": 34, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_004",
+          "parent_span_id": "span_003",
+          "type": "tool",
+          "name": "payment_adapter.charge",
+          "status": "error",
+          "input": {"invoice_id": "inv_001", "amount_cents": 4200, "idempotency_key": null},
+          "output": {"charge_id": "ch_002", "duplicate": true, "error": "duplicate side effect"},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 180, "cost_usd": 0}
+        }
+      ]
+    }
+  },
+  {
+    "scenario_id": "infinite_retry_terminal_error",
+    "name": "Infinite retry on terminal error",
+    "family": "Tool use and control flow",
+    "description": "The retry policy treats a terminal HTTP 400 as transient and repeats identical calls.",
+    "seed": 42,
+    "memory_test": true,
+    "root_cause_category": "TOOL_RETRY_STORM",
+    "mutation": "HTTP 400 treated as transient",
+    "symptom": "Repeated identical calls",
+    "remediation": {
+      "remediation_type": "RETRY_POLICY_CHANGE",
+      "remediation_id": "mark_4xx_non_retryable_v1",
+      "target_component": "retry_policy"
+    },
+    "reference": {
+      "expected_status": "passed",
+      "steps": [
+        {
+          "span_id": "span_001",
+          "type": "model",
+          "name": "api_agent.build_request",
+          "status": "ok",
+          "input": {"resource_id": "doc_123"},
+          "output": {"resource_id": "doc_123", "payload_valid": true},
+          "usage": {"input_tokens": 84, "output_tokens": 18, "tool_calls": 0, "latency_ms": 32, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_002",
+          "parent_span_id": "span_001",
+          "type": "tool",
+          "name": "http_client.fetch_resource",
+          "status": "ok",
+          "input": {"resource_id": "doc_123", "payload_valid": true},
+          "output": {"http_status": 200, "body": "resource body"},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 95, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_003",
+          "parent_span_id": "span_002",
+          "type": "model",
+          "name": "api_agent.summarize_resource",
+          "status": "ok",
+          "input": {"body": "resource body"},
+          "output": {"answer": "resource body"},
+          "usage": {"input_tokens": 60, "output_tokens": 12, "tool_calls": 0, "latency_ms": 24, "cost_usd": 0}
+        }
+      ]
+    },
+    "mutated": {
+      "expected_status": "failed",
+      "steps": [
+        {
+          "span_id": "span_001",
+          "type": "model",
+          "name": "api_agent.build_request",
+          "status": "ok",
+          "input": {"resource_id": "doc_123"},
+          "output": {"resource_id": "doc_123", "payload_valid": false},
+          "usage": {"input_tokens": 84, "output_tokens": 18, "tool_calls": 0, "latency_ms": 32, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_002",
+          "parent_span_id": "span_001",
+          "type": "tool",
+          "name": "http_client.fetch_resource",
+          "status": "error",
+          "input": {"resource_id": "doc_123", "payload_valid": false},
+          "output": {"http_status": 400, "error": "invalid request"},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 95, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_003",
+          "parent_span_id": "span_002",
+          "type": "tool",
+          "name": "retry_policy.classify_error",
+          "status": "ok",
+          "input": {"http_status": 400},
+          "output": {"retryable": true, "classification": "transient"},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 4, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_004",
+          "parent_span_id": "span_003",
+          "type": "tool",
+          "name": "http_client.fetch_resource",
+          "status": "error",
+          "input": {"resource_id": "doc_123", "payload_valid": false},
+          "output": {"http_status": 400, "error": "invalid request", "repeated": true},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 95, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_005",
+          "parent_span_id": "span_004",
+          "type": "tool",
+          "name": "http_client.fetch_resource",
+          "status": "error",
+          "input": {"resource_id": "doc_123", "payload_valid": false},
+          "output": {"http_status": 400, "error": "invalid request", "repeated": true},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 95, "cost_usd": 0}
+        }
+      ]
+    }
+  },
+  {
+    "scenario_id": "missing_loop_exit_condition",
+    "name": "Missing loop exit condition",
+    "family": "Tool use and control flow",
+    "description": "The planner-executor loop ignores a success flag and continues after completion.",
+    "seed": 42,
+    "memory_test": false,
+    "root_cause_category": "LOOP_NON_TERMINATION",
+    "mutation": "Success flag ignored",
+    "symptom": "Planner-executor loop continues",
+    "remediation": {
+      "remediation_type": "TERMINATION_CONDITION",
+      "remediation_id": "stop_on_success_flag_v1",
+      "target_component": "planner_executor_loop"
+    },
+    "reference": {
+      "expected_status": "passed",
+      "steps": [
+        {
+          "span_id": "span_001",
+          "type": "model",
+          "name": "planner_executor.plan_next",
+          "status": "ok",
+          "input": {"goal": "complete onboarding checklist"},
+          "output": {"action": "complete_checklist"},
+          "usage": {"input_tokens": 100, "output_tokens": 20, "tool_calls": 0, "latency_ms": 40, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_002",
+          "parent_span_id": "span_001",
+          "type": "tool",
+          "name": "planner_executor.execute_task",
+          "status": "ok",
+          "input": {"action": "complete_checklist"},
+          "output": {"success": true, "completed": true},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 110, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_003",
+          "parent_span_id": "span_002",
+          "type": "tool",
+          "name": "planner_executor.check_loop_exit",
+          "status": "ok",
+          "input": {"success": true},
+          "output": {"should_stop": true},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 6, "cost_usd": 0}
+        }
+      ]
+    },
+    "mutated": {
+      "expected_status": "failed",
+      "steps": [
+        {
+          "span_id": "span_001",
+          "type": "model",
+          "name": "planner_executor.plan_next",
+          "status": "ok",
+          "input": {"goal": "complete onboarding checklist"},
+          "output": {"action": "complete_checklist"},
+          "usage": {"input_tokens": 100, "output_tokens": 20, "tool_calls": 0, "latency_ms": 40, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_002",
+          "parent_span_id": "span_001",
+          "type": "tool",
+          "name": "planner_executor.execute_task",
+          "status": "ok",
+          "input": {"action": "complete_checklist"},
+          "output": {"success": true, "completed": true},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 110, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_003",
+          "parent_span_id": "span_002",
+          "type": "tool",
+          "name": "planner_executor.check_loop_exit",
+          "status": "ok",
+          "input": {"success": true},
+          "output": {"should_stop": false, "ignored_success": true},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 6, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_004",
+          "parent_span_id": "span_003",
+          "type": "model",
+          "name": "planner_executor.plan_next",
+          "status": "ok",
+          "input": {"goal": "complete onboarding checklist", "completed": true},
+          "output": {"action": "complete_checklist"},
+          "usage": {"input_tokens": 110, "output_tokens": 18, "tool_calls": 0, "latency_ms": 42, "cost_usd": 0}
+        },
+        {
+          "span_id": "span_005",
+          "parent_span_id": "span_004",
+          "type": "tool",
+          "name": "planner_executor.execute_task",
+          "status": "error",
+          "input": {"action": "complete_checklist"},
+          "output": {"error": "task already completed", "loop_continued": true},
+          "usage": {"input_tokens": 0, "output_tokens": 0, "tool_calls": 1, "latency_ms": 110, "cost_usd": 0}
+        }
+      ]
+    }
+  }
+]

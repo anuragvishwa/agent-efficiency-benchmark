@@ -1,0 +1,9 @@
+{
+  "default_model": "mock",
+  "optional_llm_baseline": {
+    "enabled": false,
+    "model": null,
+    "max_input_tokens": 6000,
+    "max_output_tokens": 500
+  }
+}

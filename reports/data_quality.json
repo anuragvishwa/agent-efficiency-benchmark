@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-06-12T10:10:18.921978+00:00",
+  "methodology_version": "0.1.0",
+  "dataset_key": "terminalbench",
+  "dataset_label": "Terminal-Bench",
+  "dataset_id": "yoonholee/terminalbench-trajectories",
+  "source_revision": "04e8940f5b6736a7ce8d22224fe2f2af74163ed2",
+  "source_last_modified": "2026-03-09T20:10:43+00:00",
+  "snapshot_cutoff": "2026-03-05T22:54:39.383638+00:00",
+  "earliest_started_at": "2025-10-31T06:55:22.291303+00:00",
+  "run_count": 52104,
+  "step_event_count": 1981314,
+  "runs_with_usable_steps": 34462,
+  "runs_without_usable_steps": 17642,
+  "trajectory_coverage": 0.661407953324121,
+  "cost_field_coverage": 1.0,
+  "positive_cost_coverage": 0.6050783049286044,
+  "zero_cost_count": 20577,
+  "missing_cost_count": 0,
+  "duration_coverage": 1.0,
+  "token_coverage": 0.6611776447105788,
+  "unique_tasks": 89,
+  "unique_agents": 26,
+  "unique_models_raw": 49,
+  "unique_models_canonical": 44,
+  "run_id_sources": [
+    {
+      "run_id_source": "derived",
+      "runs": 29506
+    },
+    {
+      "run_id_source": "trial_id",
+      "runs": 22598
+    }
+  ]
+}
