@@ -76,6 +76,20 @@ The dashboard runs locally with:
 streamlit run dashboard/app.py
 ```
 
+## Public Streamlit Deployment
+
+This repository is ready for Streamlit Community Cloud. Use these settings:
+
+```text
+Repository: anuragvishwa/agent-efficiency-benchmark
+Branch: main
+Main file path: dashboard/app.py
+```
+
+The public app uses the checked-in `reports/public_benchmark.json`,
+`reports/swe_agent_public_benchmark.json`, and selected report CSVs. It does not
+require downloading the raw datasets or committing local DuckDB/Parquet files.
+
 ## AFWB Lite Foundation
 
 AFWB Lite is a deterministic, local benchmark layer for agent root-cause and
