@@ -68,7 +68,7 @@ for (dataset_key, label), tab in zip(datasets, tabs[:-1]):
                 "FROM agent_model_leaderboard ORDER BY runs DESC LIMIT 25",
                 dataset=dataset_key,
             ),
-            use_container_width=True,
+            width="stretch",
         )
 
 with tabs[-1]:
@@ -106,10 +106,10 @@ with tabs[-1]:
     )
 
     st.subheader("Trace generation")
-    st.dataframe(trace_summary, use_container_width=True)
+    st.dataframe(trace_summary, width="stretch")
 
     st.subheader("Foundation scenarios")
-    st.dataframe(scenarios, use_container_width=True)
+    st.dataframe(scenarios, width="stretch")
 
     st.subheader("Gold RCA labels")
-    st.dataframe(gold, use_container_width=True)
+    st.dataframe(gold, width="stretch")

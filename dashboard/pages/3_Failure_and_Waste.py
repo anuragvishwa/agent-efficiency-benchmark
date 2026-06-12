@@ -21,9 +21,9 @@ for (dataset_key, label), tab in zip(
         )
         st.plotly_chart(
             px.bar(patterns, x="rule_based_rca", y="failed_runs"),
-            use_container_width=True,
+            width="stretch",
         )
-        st.dataframe(patterns, use_container_width=True)
+        st.dataframe(patterns, width="stretch")
 
         st.subheader("Early-stop simulation")
         try:
@@ -31,6 +31,6 @@ for (dataset_key, label), tab in zip(
                 "SELECT * FROM early_stop_simulation LIMIT 5000",
                 dataset=dataset_key,
             )
-            st.dataframe(early, use_container_width=True)
+            st.dataframe(early, width="stretch")
         except Exception:
             st.info("Run the early-stop command to populate this table.")

@@ -29,6 +29,6 @@ for (dataset_key, label), tab in zip(
         outcomes = query("SELECT * FROM outcome_comparison", dataset=dataset_key)
         st.plotly_chart(
             px.bar(outcomes, x="success", y="runs", color="scope", barmode="group"),
-            use_container_width=True,
+            width="stretch",
         )
-        st.dataframe(outcomes, use_container_width=True)
+        st.dataframe(outcomes, width="stretch")

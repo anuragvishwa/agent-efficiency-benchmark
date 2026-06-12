@@ -24,12 +24,12 @@ for (dataset_key, label), tab in zip(
                 "SELECT * FROM trajectory_coverage_by_system ORDER BY runs DESC",
                 dataset=dataset_key,
             ),
-            use_container_width=True,
+            width="stretch",
         )
         st.dataframe(
             query(
                 "SELECT * FROM cost_coverage_by_system ORDER BY runs DESC",
                 dataset=dataset_key,
             ),
-            use_container_width=True,
+            width="stretch",
         )

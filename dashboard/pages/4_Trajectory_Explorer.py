@@ -18,5 +18,5 @@ if not options:
 run_id = st.selectbox("Run", options)
 summary = run_summary(run_id, dataset=dataset_key)
 if not summary.is_empty():
-    st.dataframe(summary, use_container_width=True)
-st.dataframe(run_steps(run_id, dataset=dataset_key), use_container_width=True)
+    st.dataframe(summary, width="stretch")
+st.dataframe(run_steps(run_id, dataset=dataset_key), width="stretch")

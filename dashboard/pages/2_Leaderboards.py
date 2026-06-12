@@ -21,7 +21,7 @@ for (dataset_key, label), tab in zip(
                     "SELECT * FROM agent_model_leaderboard ORDER BY runs DESC",
                     dataset=dataset_key,
                 ),
-                use_container_width=True,
+                width="stretch",
             )
         with tab_agents:
             st.dataframe(
@@ -29,7 +29,7 @@ for (dataset_key, label), tab in zip(
                     "SELECT * FROM agent_leaderboard ORDER BY runs DESC",
                     dataset=dataset_key,
                 ),
-                use_container_width=True,
+                width="stretch",
             )
         with tab_models:
             st.dataframe(
@@ -37,5 +37,5 @@ for (dataset_key, label), tab in zip(
                     "SELECT * FROM model_uncontrolled_leaderboard ORDER BY runs DESC",
                     dataset=dataset_key,
                 ),
-                use_container_width=True,
+                width="stretch",
             )
